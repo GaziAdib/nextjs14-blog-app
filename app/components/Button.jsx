@@ -1,14 +1,11 @@
 'use client';
-
-import React from 'react'
-
-const Button = () => {
+const Button = ({ label, color }) => {
     return (
         <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+            className={`bg-${color}-500 text-gray-800 py-2 px-4 rounded-md hover:bg-${color}-600 focus:outline-none focus:ring focus:border-${color}-300`}
         >
-            Submit
+            {label}
         </button>
     )
 }

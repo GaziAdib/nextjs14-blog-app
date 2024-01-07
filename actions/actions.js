@@ -103,3 +103,18 @@ export const fetchComments = async (blogId) => {
 
     return comments
 }
+
+// Delete comment
+export const deleteComment = async (commentId, blogId) => {
+    await prisma.comment.delete(
+        {
+            where: {
+                id: commentId
+            }
+        }
+    );
+
+    revalidatePath(`/blogs/${blogId}`)
+    redirect(`/blogs/${blogId}`)
+}
+

@@ -36,8 +36,8 @@ const CommentForm = ({ blogId }) => {
                     required
                 ></textarea>
             </div>
-            <div>
-                <Button />
+            <div className='mx-2 my-2 py-1 px-3'>
+                <Button label={'Add Comment'} color={'red'} />
             </div>
         </form>
     )

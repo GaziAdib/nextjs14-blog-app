@@ -59,7 +59,7 @@ const BlogUpdateForm = ({ id, blog }) => {
                 />
             </div>
 
-            <Button />
+            <Button label={'Update Blog'} color={'green'} />
 
         </form>
     )
