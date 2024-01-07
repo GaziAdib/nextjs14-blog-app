@@ -7,7 +7,7 @@ import { addBlog } from '@/actions/actions';
 const BlogPostForm = () => {
     const ref = useRef();
     return (
-        <form action={async formData => {
+        <form ref={ref} action={async formData => {
             await addBlog(formData)
             ref.current?.reset();
         }} className="max-w-md mx-auto mt-8 p-8 bg-white rounded shadow-md">

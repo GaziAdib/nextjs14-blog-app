@@ -19,8 +19,8 @@ const CommentForm = ({ blogId }) => {
     return (
         <form ref={ref} action={handleAddComment} className="max-w-md flex mx-auto mt-8">
 
-            <div className="mb-4 ml-5 px-2">
-                <Image className='rounded-full' src="https://avatars.githubusercontent.com/u/41202696?v=4" height={70} width={70} />
+            <div className="mb-2 mr-5 px-2">
+                <Image className='rounded-full mt-6' src="https://avatars.githubusercontent.com/u/41202696?v=4" height={70} width={70} />
             </div>
 
             <div className="mb-4">
@@ -32,12 +32,12 @@ const CommentForm = ({ blogId }) => {
                     name="text"
                     placeholder="add text"
                     rows="4"
-                    className="mt-1 p-2 w-full text-gray-800 border rounded-md"
+                    className="mt-1 p-2 w-500 text-gray-800 border rounded-md"
                     required
                 ></textarea>
             </div>
-            <div className='mx-2 my-2 py-1 px-3'>
-                <Button label={'Add Comment'} color={'red'} />
+            <div className='mt-5 py-1 px-2'>
+                <Button label={'Add Comment'} color={'green'} />
             </div>
         </form>
     )
