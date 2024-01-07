@@ -89,3 +89,17 @@ export const addCommentOnBlog = async (blogId, formData) => {
     redirect(`/blogs/${blogId}`)
 }
 
+
+
+// fetch comment on a single blog id
+export const fetchComments = async (blogId) => {
+    const comments = await prisma.comment.findMany(
+        {
+            where: {
+                blogId: blogId
+            }
+        }
+    );
+
+    return comments
+}

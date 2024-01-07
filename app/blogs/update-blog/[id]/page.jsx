@@ -1,8 +1,6 @@
 import { fetchSingleBlog } from '@/actions/actions';
 import BlogUpdateForm from '@/app/components/BlogUpdateForm'
 
-
-
 const UpdateBlog = async ({ params }) => {
 
     const id = params?.id;
