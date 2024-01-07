@@ -69,3 +69,23 @@ export const updateBlog = async (id, formData) => {
     revalidatePath(`/blogs/update-blog/${id}`)
     redirect('/blogs')
 }
+
+
+// add a single comment to a blog id
+
+export const addCommentOnBlog = async (blogId, formData) => {
+
+
+    const text = formData.get('text');
+
+    const new_coment = await prisma.comment.create({
+        data: {
+            blogId: blogId,
+            text: text,
+        }
+    });
+
+    revalidatePath(`/blogs/${blogId}`)
+    redirect(`/blogs/${blogId}`)
+}
+

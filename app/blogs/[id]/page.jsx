@@ -1,4 +1,5 @@
 import { fetchSingleBlog } from "@/actions/actions";
+import CommentForm from "@/app/components/CommentForm";
 
 
 
@@ -26,6 +27,12 @@ const BlogDetail = async ({ params }) => {
                     {blog?.description}
                 </p>
 
+            </div>
+
+            <div className="justify-content-center text-center mx-auto px-5 py-5">
+                Comment Form
+
+                <CommentForm blogId={blog?.id} />
             </div>
 
         </div>
