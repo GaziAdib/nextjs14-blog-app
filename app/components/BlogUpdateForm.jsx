@@ -1,17 +1,23 @@
 'use client';
-import { useRef } from 'react';
-import Button from './Button';
+import { updateBlog } from "@/actions/actions";
+import Button from "./Button";
 
-import { addBlog } from '@/actions/actions';
 
-const BlogPostForm = () => {
-    const ref = useRef();
+const BlogUpdateForm = ({ id, blog }) => {
+
+
+    const { title, category, description } = blog || {};
+
+    // update it properly using server actions 
+
+    const updateHandler = async (formData) => {
+        await updateBlog(id, formData)
+    }
+
+
     return (
-        <form action={async formData => {
-            await addBlog(formData)
-            ref.current?.reset();
-        }} className="max-w-md mx-auto mt-8 p-8 bg-white rounded shadow-md">
-            <h2 className="text-2xl font-semibold mb-6">Create a New Blog Post</h2>
+        <form action={updateHandler} className="max-w-md mx-auto mt-8 p-8 bg-white rounded shadow-md">
+            <h2 className="text-2xl text-gray-800 font-semibold mb-6">Update Blog Post</h2>
 
             <div className="mb-4">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-600">
@@ -21,6 +27,7 @@ const BlogPostForm = () => {
                     type="text"
                     id="title"
                     name="title"
+                    value={title}
                     className="mt-1 p-2 w-full border text-gray-600 rounded-md"
                     placeholder="Enter title"
                 />
@@ -58,4 +65,4 @@ const BlogPostForm = () => {
     )
 }
 
-export default BlogPostForm
+export default BlogUpdateForm

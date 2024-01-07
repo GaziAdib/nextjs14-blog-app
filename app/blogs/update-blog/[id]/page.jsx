@@ -1,9 +1,24 @@
-import React from 'react'
+import { fetchSingleBlog } from '@/actions/actions';
+import BlogUpdateForm from '@/app/components/BlogUpdateForm'
 
-const UpdateBlog = ({ id }) => {
+
+
+const UpdateBlog = async ({ params }) => {
+
+    const id = params?.id;
+
+    const blog = await fetchSingleBlog(id);
+
     return (
-        <div>UpdateBlog id: {id}</div>
+        <div>
+            UpdateBlog id: {id}
+            {
+                blog && <BlogUpdateForm id={id} blog={blog} />
+            }
+
+        </div>
     )
 }
 
 export default UpdateBlog
+

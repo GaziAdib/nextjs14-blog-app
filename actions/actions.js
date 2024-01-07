@@ -9,6 +9,8 @@ import { redirect } from "next/navigation";
 
 const prisma = new PrismaClient();
 
+
+// add a blog post
 export const addBlog = async (formData) => {
     const title = formData.get('title');
     const description = formData.get('description');
@@ -32,6 +34,8 @@ export const fetchBlogs = async () => {
     return blogs;
 }
 
+
+// fetch a single blog
 export const fetchSingleBlog = async (id) => {
     const blog = await prisma.blog.findFirst(
         {
@@ -41,4 +45,27 @@ export const fetchSingleBlog = async (id) => {
         }
     );
     return blog
+}
+
+// update a single blog
+
+export const updateBlog = async (id, formData) => {
+
+    const title = formData.get('title');
+    const description = formData.get('description');
+    const category = formData.get('category');
+
+    const updatedBlog = await prisma.blog.update({
+        where: {
+            id: id,
+        },
+        data: {
+            title: title,
+            description: description,
+            category: category
+        }
+    });
+
+    revalidatePath(`/blogs/update-blog/${id}`)
+    redirect('/blogs')
 }
