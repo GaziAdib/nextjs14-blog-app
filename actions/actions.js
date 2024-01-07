@@ -29,10 +29,10 @@ export const addBlog = async (formData) => {
 
 // fetch all the blogs 
 
-export const fetchBlogs = async () => {
-    const blogs = await prisma.blog.findMany({});
-    return blogs;
-}
+// export const fetchBlogs = async () => {
+//     const blogs = await prisma.blog.findMany({});
+//     return blogs;
+// }
 
 
 // fetch a single blog
