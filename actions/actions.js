@@ -75,7 +75,6 @@ export const updateBlog = async (id, formData) => {
 
 export const addCommentOnBlog = async (blogId, formData) => {
 
-
     const text = formData.get('text');
 
     const new_coment = await prisma.comment.create({
