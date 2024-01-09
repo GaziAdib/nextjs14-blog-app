@@ -15,9 +15,11 @@ export const addBlog = async (formData) => {
     const title = formData.get('title');
     const description = formData.get('description');
     const category = formData.get('category');
+    const imageUrl = formData.get('imageUrl');
 
     const newBlog = await prisma.blog.create({
         data: {
+            imageUrl: imageUrl ? imageUrl : '',
             title,
             description,
             category
@@ -54,15 +56,17 @@ export const updateBlog = async (id, formData) => {
     const title = formData.get('title');
     const description = formData.get('description');
     const category = formData.get('category');
+    const imageUrl = formData.get('imageUrl');
 
     const updatedBlog = await prisma.blog.update({
         where: {
             id: id,
         },
         data: {
-            title: title,
-            description: description,
-            category: category
+            imageUrl: imageUrl ? imageUrl : null,
+            title,
+            description,
+            category
         }
     });
 

@@ -11,7 +11,20 @@ const BlogPostForm = () => {
             await addBlog(formData)
             ref.current?.reset();
         }} className="max-w-md mx-auto mt-8 p-8 bg-white rounded shadow-md">
-            <h2 className="text-2xl font-semibold mb-6">Create a New Blog Post</h2>
+            <h2 className="text-2xl text-green-500 font-semibold mb-6">Create a New Blog Post</h2>
+
+            <div className="mb-4">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-600">
+                    Upload Image Link
+                </label>
+                <input
+                    type="text"
+                    id="imageUrl"
+                    name="imageUrl"
+                    className="mt-1 p-2 w-full border text-gray-600 rounded-md"
+                    placeholder="Enter imageUrl"
+                />
+            </div>
 
             <div className="mb-4">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-600">

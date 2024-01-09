@@ -22,6 +22,7 @@ model Comment {
 
 model Blog {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  imageUrl    String?
   title       String
   author      String    @default("adib")
   description String?
