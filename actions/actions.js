@@ -1,14 +1,9 @@
 'use server';
-
-// logics
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-
-
 const prisma = new PrismaClient();
-
 
 // add a blog post
 export const addBlog = async (formData) => {

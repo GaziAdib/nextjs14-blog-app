@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,7 +8,7 @@ const BlogItem = ({ blog }) => {
         <div className="bg-gray-900 p-4 border-2 border-green-200 mx-2 my-2 rounded-lg shadow-md">
             <Link href={`/blogs/${id}`}>
                 {
-                    blog?.imageUrl ? <Image quality={100} src={blog.imageUrl} width="500" height="400" alt={title} className="w-full h-[200px]  lg:h-[250px] object-cover mb-4 rounded-md" /> : null
+                    blog?.imageUrl ? <Image quality={100} placeholder="blur" blurDataURL={blog?.imageUrl} src={blog.imageUrl} width="500" height="400" alt={title} className="w-full h-[200px]  lg:h-[250px] object-cover mb-4 rounded-md" /> : null
                 }
             </Link>
             <Link href={`/blogs/${id}`}>
