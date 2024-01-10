@@ -21,3 +21,5 @@ const BlogItem = ({ blog }) => {
 }
 
 export default BlogItem
+
+

@@ -1,7 +1,7 @@
 'use client';
 import { updateBlog } from "@/actions/actions";
 import Button from "./Button";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 
 const BlogUpdateForm = ({ id, blog }) => {
