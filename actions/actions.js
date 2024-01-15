@@ -95,8 +95,13 @@ export const fetchComments = async (blogId) => {
         {
             where: {
                 blogId: blogId
-            }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: 3
         }
+
     );
 
     return comments
