@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const BlogItem = ({ blog }) => {
 
-    const { id, title, description, category, author } = blog || {};
+    const { id, title, description, category } = blog || {};
     return (
         <div className="bg-gray-900 p-4 border-2 border-green-200 mx-2 my-2 rounded-lg shadow-md">
             <Link href={`/blogs/${id}`}>
