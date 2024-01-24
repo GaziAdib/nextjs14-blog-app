@@ -11,18 +11,21 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  email    String @unique
-  password String
-  role     Role   @default(USER)
-  Blog     Blog[]
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  username    String
+  email       String    @unique
+  password    String
+  role        Role      @default(USER)
+  Blog        Blog[]
+  Comment     Comment[]
+  permissions String[]
 }
 
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   text      String
-  author    String?  @default("adib")
+  authorId  String   @db.ObjectId
+  author    User?    @relation(fields: [authorId], references: [id])
   blogId    String   @db.ObjectId
   blog      Blog?    @relation(fields: [blogId], references: [id])
   createdAt DateTime @default(now())
@@ -34,7 +37,7 @@ model Blog {
   imageUrl    String?
   title       String
   authorId    String    @db.ObjectId
-  author      User      @relation(fields: [authorId], references: [id])
+  author      User?     @relation(fields: [authorId], references: [id])
   description String?
   category    String
   createdAt   DateTime  @default(now())
@@ -45,4 +48,5 @@ model Blog {
 enum Role {
   USER
   ADMIN
+  EDITOR
 }

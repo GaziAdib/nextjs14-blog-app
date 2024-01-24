@@ -1,10 +1,16 @@
-import { NextResponse } from "next/server"
+import { getServerSession } from 'next-auth/next'
+import { NextResponse } from 'next/server'
+import { authOptions } from './auth/[...nextauth]/route'
 
-export async function GET(request, { params }) {
+export async function GET(req, res) {
+    const session = await getServerSession(authOptions)
 
-    console.log(request.url);
+    if (!session) {
+        return new NextResponse(JSON.stringify({ error: 'unauthorized' }), {
+            status: 401
+        })
+    }
 
-    console.log('params-id: ' + JSON.stringify(params?.id));
-
-    return NextResponse.json({ message: 'Weldone my friend!' })
+    console.log('GET API', session)
+    return NextResponse.json({ authenticated: session })
 }

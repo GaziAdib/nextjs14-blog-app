@@ -1,10 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useRef, useState } from "react";
 
 const RegisterPage = () => {
 
     const ref = useRef();
+
+    const router = useRouter();;
 
     const [userInfo, setUserInfo] = useState({
         username: '',
@@ -12,7 +16,7 @@ const RegisterPage = () => {
         password: '',
     });
 
-    const [pending, setPending] = useState(true);
+    const [pending, setPending] = useState(false);
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
@@ -45,10 +49,11 @@ const RegisterPage = () => {
             if (res.ok) {
                 setPending(false);
                 ref?.current?.reset();
+                router.push('/auth/login')
                 console.log("User registration done");
             } else {
-                const errorData = await res.json();
-                setError("Error:", errorData?.message)
+                const data = await res.json();
+                setError("Error 1:", data?.message);
                 console.log('Something went wrong');
                 setPending(false);
             }
@@ -113,10 +118,11 @@ const RegisterPage = () => {
                 <div className="flex items-center justify-between">
                     {error && <span className="text-red-600 mx-2 px-2">{error}</span>}
                     <button
+                        disabled={pending === true}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit"
                     >
-                        Sign Up
+                        {pending ? 'Registering' : 'Sign Up'}
                     </button>
                 </div>
             </form>
