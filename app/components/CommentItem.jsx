@@ -4,7 +4,7 @@ import Button from "./Button";
 
 const CommentItem = ({ comment }) => {
 
-    const { id, blogId, text, author } = comment;
+    const { id, blogId, text, auther } = comment;
 
     const deleteCommentHandler = async (formData) => {
         const id = formData.get('id');
@@ -35,7 +35,7 @@ const CommentItem = ({ comment }) => {
                     </div>
 
                     {/* User Name */}
-                    <div className="font-bold text-gray-200">{author}</div>
+                    <div className="font-bold text-gray-200">{auther}</div>
                 </div>
 
                 {/* Comment Content */}

@@ -1,5 +1,7 @@
 'use server';
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -12,16 +14,31 @@ export const addBlog = async (formData) => {
     const category = formData.get('category');
     const imageUrl = formData.get('imageUrl');
 
-    const newBlog = await prisma.blog.create({
-        data: {
-            imageUrl: imageUrl ? imageUrl : '',
-            title,
-            description,
-            category
+    //check admin
+    const session = await getServerSession(authOptions);
+
+
+
+
+    const user = await prisma.user.findFirst({
+        where: {
+            email: session.user.email
         }
     })
-    revalidatePath('/blogs/add-blog')
-    redirect('/blogs')
+
+    if (user?.role === 'ADMIN') {
+        const newBlog = await prisma.blog.create({
+            data: {
+                imageUrl: imageUrl ? imageUrl : '',
+                title,
+                description,
+                category,
+                authorId: session.user.id
+            }
+        })
+        revalidatePath('/blogs/add-blog')
+        redirect('/blogs')
+    }
 }
 
 // fetch all the blogs 
@@ -75,9 +92,11 @@ export const updateBlog = async (id, formData) => {
 export const addCommentOnBlog = async (blogId, formData) => {
 
     const text = formData.get('text');
+    const session = await getServerSession(authOptions);
 
     const new_coment = await prisma.comment.create({
         data: {
+            authorId: session.user.id,
             blogId: blogId,
             text: text,
         }
@@ -109,15 +128,33 @@ export const fetchComments = async (blogId) => {
 
 // Delete comment
 export const deleteComment = async (commentId, blogId) => {
-    await prisma.comment.delete(
-        {
-            where: {
-                id: commentId
-            }
-        }
-    );
+    const session = await getServerSession(authOptions);
 
-    revalidatePath(`/blogs/${blogId}`)
-    redirect(`/blogs/${blogId}`)
+
+    const comment = await prisma.comment.findFirst({
+        where: {
+            id: commentId
+        }
+    })
+
+    if (comment.authorId !== session.user.id) {
+        console.log('You are not allowed to delete')
+    }
+
+    if (comment.authorId === session.user.id) {
+        await prisma.comment.delete(
+            {
+                where: {
+                    id: commentId,
+                }
+            }
+        );
+
+        revalidatePath(`/blogs/${blogId}`)
+        redirect(`/blogs/${blogId}`)
+    }
+
+
+
 }
 

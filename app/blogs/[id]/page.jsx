@@ -13,7 +13,6 @@ const BlogDetail = async ({ params }) => {
 
     return (
         <div className="">
-            <p> blog id {id}</p>
 
             <div className="text-center bg-gray-800 rounded-md border-2 border-green-600 shadow-md px-4 py-2 mx-3 my-3">
 
