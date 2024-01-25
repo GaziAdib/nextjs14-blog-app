@@ -18,8 +18,6 @@ export const addBlog = async (formData) => {
     const session = await getServerSession(authOptions);
 
 
-
-
     const user = await prisma.user.findFirst({
         where: {
             email: session.user.email
@@ -33,7 +31,7 @@ export const addBlog = async (formData) => {
                 title,
                 description,
                 category,
-                authorId: session.user.id
+                authorId: session?.user?.id
             }
         })
         revalidatePath('/blogs/add-blog')
@@ -137,11 +135,11 @@ export const deleteComment = async (commentId, blogId) => {
         }
     })
 
-    if (comment.authorId !== session.user.id) {
+    if (comment.authorId !== session?.user?.id) {
         console.log('You are not allowed to delete')
     }
 
-    if (comment.authorId === session.user.id) {
+    if (comment.authorId === session?.user?.id) {
         await prisma.comment.delete(
             {
                 where: {

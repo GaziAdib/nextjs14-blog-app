@@ -1,6 +1,10 @@
 'use client';
+
+
 const Button = ({ label, color }) => {
+
     return (
+
         <button
             style={{ color: color }}
             type="submit"
@@ -8,6 +12,9 @@ const Button = ({ label, color }) => {
         >
             {label}
         </button>
+
+
+
     )
 }
 

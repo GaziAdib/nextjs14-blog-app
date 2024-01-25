@@ -1,10 +1,17 @@
 "use client";
 import { deleteComment } from "@/actions/actions";
 import Button from "./Button";
+import { useSession } from "next-auth/react";
 
 const CommentItem = ({ comment }) => {
 
-    const { id, blogId, text, auther } = comment;
+    const session = useSession();
+
+    //const currentUserId = session?.data?.user?.id
+
+    const { id, blogId, text, authorId } = comment;
+
+
 
     const deleteCommentHandler = async (formData) => {
         const id = formData.get('id');
@@ -20,7 +27,7 @@ const CommentItem = ({ comment }) => {
                         <svg
                             className="w-4 h-4 text-gray-200"
                             fill="none"
-                            stroke="currentColor"
+                            stroke="currentC olor"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
                         >
@@ -35,17 +42,27 @@ const CommentItem = ({ comment }) => {
                     </div>
 
                     {/* User Name */}
-                    <div className="font-bold text-gray-200">{auther}</div>
+                    <div className="font-bold text-gray-200">{authorId}</div>
                 </div>
 
                 {/* Comment Content */}
                 <p className="text-lg text-gray-300">{text}</p>
+
+
             </div>
 
-            <form action={deleteCommentHandler}>
-                <input type="hidden" name="id" value={id} />
-                <Button label={'Delete'} color={'red'} />
-            </form>
+            <div className="">
+                <form action={deleteCommentHandler}>
+                    <input type="hidden" name="id" value={id} />
+                    {session?.data?.user?.id === authorId && <Button label={'Delete'} color={'red'} />}
+                </form>
+            </div>
+
+
+
+
+
+
         </>
 
 
