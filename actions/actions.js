@@ -1,11 +1,17 @@
 'use server';
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { checkSessionUser } from "@/app/lib/checkSessionUser";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const prisma = new PrismaClient();
+
+//const sessionUser = await checkSessionUser();
+
+//console.log('session: ' + sessionUser)
+
 
 // add a blog post
 export const addBlog = async (formData) => {
@@ -17,10 +23,9 @@ export const addBlog = async (formData) => {
     //check admin
     const session = await getServerSession(authOptions);
 
-
     const user = await prisma.user.findFirst({
         where: {
-            email: session.user.email
+            email: session?.user?.email
         }
     })
 
@@ -31,7 +36,7 @@ export const addBlog = async (formData) => {
                 title,
                 description,
                 category,
-                authorId: session?.user?.id
+                authorId: checkSessionUser(session)
             }
         })
         revalidatePath('/blogs/add-blog')
@@ -68,20 +73,47 @@ export const updateBlog = async (id, formData) => {
     const category = formData.get('category');
     const imageUrl = formData.get('imageUrl');
 
-    const updatedBlog = await prisma.blog.update({
-        where: {
-            id: id,
-        },
-        data: {
-            imageUrl: imageUrl ? imageUrl : null,
-            title,
-            description,
-            category
-        }
-    });
+    // new stuff implement i have given to riad@gmail.com to edit the blog 
 
-    revalidatePath(`/blogs/update-blog/${id}`)
-    redirect('/blogs')
+    const session = await getServerSession(authOptions);
+
+    // get the blog 
+    const blog = await prisma.blog.findFirst({
+        where: {
+            id: id
+        }
+
+    });
+    //blog?.authorId === session?.user?.id || session?.user?.permissions?.includes('EDIT_BLOG')
+    console.log('permissions:', session?.user?.permissions)
+
+    const getuser = await prisma.user.findFirst({
+        where: {
+            id: session?.user?.id
+        }
+    })
+
+    if (getuser?.permissions?.includes('EDIT_BLOG') || (blog?.authorId === session?.user?.id)) {
+        const updatedBlog = await prisma.blog.update({
+            where: {
+                id: id,
+            },
+            data: {
+                imageUrl: imageUrl ? imageUrl : null,
+                title,
+                description,
+                category,
+                authorId: session?.user?.id
+            }
+        });
+        revalidatePath(`/blogs/update-blog/${id}`)
+        redirect(`/blogs`)
+    }
+
+    else {
+        console.log('YOU ARE NOT ALLOWED TO UPDATE');
+    }
+
 }
 
 
@@ -94,7 +126,7 @@ export const addCommentOnBlog = async (blogId, formData) => {
 
     const new_coment = await prisma.comment.create({
         data: {
-            authorId: session.user.id,
+            authorId: checkSessionUser(session),
             blogId: blogId,
             text: text,
         }
@@ -135,11 +167,11 @@ export const deleteComment = async (commentId, blogId) => {
         }
     })
 
-    if (comment.authorId !== session?.user?.id) {
+    if (comment.authorId !== checkSessionUser(session)) {
         console.log('You are not allowed to delete')
     }
 
-    if (comment.authorId === session?.user?.id) {
+    if (comment.authorId === checkSessionUser(session)) {
         await prisma.comment.delete(
             {
                 where: {
@@ -151,8 +183,60 @@ export const deleteComment = async (commentId, blogId) => {
         revalidatePath(`/blogs/${blogId}`)
         redirect(`/blogs/${blogId}`)
     }
+}
 
 
+// fetch some users
+
+// fetch comment on a single blog id
+export const fetchUsers = async () => {
+    const users = await prisma.user.findMany({
+        take: 5
+    })
+    return users
+}
+
+export const fetchSingleUser = async (userId) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            id: userId
+        }
+    })
+    return user
+}
+
+
+// add permissions for normal user to do some specific actions
+
+export const assignPermission = async (userId, formData) => {
+
+    const session = await getServerSession(authOptions);
+
+    const new_permission = formData.get('assign_permission');
+    //const permissions = new_permissions.split(",")
+
+    if (session?.user?.role === 'ADMIN') {
+
+        const assign = await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                permissions: {
+                    push: new_permission
+                }
+            }
+
+        });
+
+        revalidatePath(`/admin/dashboard`)
+        redirect(`/admin/dashboard`)
+    }
 
 }
 
+// data: {
+//     authorId: checkSessionUser(session),
+//     blogId: blogId,
+//     text: text,
+// }
