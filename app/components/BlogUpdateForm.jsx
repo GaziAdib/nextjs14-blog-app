@@ -2,6 +2,7 @@
 import { updateBlog } from "@/actions/actions";
 import Button from "./Button";
 import { useRef } from "react";
+import Toast from "./toaster/Toast";
 
 
 const BlogUpdateForm = ({ id, blog }) => {
@@ -15,6 +16,7 @@ const BlogUpdateForm = ({ id, blog }) => {
     const updateHandler = async (formData) => {
         await updateBlog(id, formData)
         ref.current?.reset();
+        <Toast label={'Blog Updated!'} />
     }
 
 
