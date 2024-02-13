@@ -2,6 +2,7 @@
 import { deleteComment } from "@/actions/actions";
 import Button from "./Button";
 import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const CommentItem = ({ comment }) => {
 
@@ -15,7 +16,34 @@ const CommentItem = ({ comment }) => {
 
     const deleteCommentHandler = async (formData) => {
         const id = formData.get('id');
+        if (session?.data?.user?.id !== authorId) {
+            toast.warn('🦄 You cannot Delete Others Comment!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
+        }
         await deleteComment(id, blogId)
+
+        toast.success('Comment Deleted Successfully!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark"
+        });
+
+
+
+
     }
     return (
         <>

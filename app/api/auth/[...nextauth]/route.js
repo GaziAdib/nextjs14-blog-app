@@ -87,6 +87,7 @@ export const authOptions = {
 
         async jwt({ token, user }) {
             // Persist the OAuth access_token and or the user id to the token right after signin
+
             if (user) {
                 return {
                     ...token,
@@ -94,10 +95,12 @@ export const authOptions = {
                     email: user.email,
                     username: user.username,
                     role: user.role,
-                    permissions: user.permissions
+                    permissions: user?.permissions
                 }
             }
+
             return token
+
         }
 
     },

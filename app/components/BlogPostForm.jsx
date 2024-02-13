@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import Button from './Button';
 
 import { addBlog } from '@/actions/actions';
+import { toast } from 'react-toastify';
 
 const BlogPostForm = () => {
     const ref = useRef();
@@ -10,6 +11,16 @@ const BlogPostForm = () => {
         <form ref={ref} action={async formData => {
             await addBlog(formData)
             ref.current?.reset();
+            toast.success('New Blog has been Created!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
         }} className="max-w-md mx-auto mt-8 p-8 bg-white rounded shadow-md">
             <h2 className="text-2xl text-green-500 font-semibold mb-6">Create a New Blog Post</h2>
 

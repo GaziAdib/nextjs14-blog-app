@@ -8,10 +8,6 @@ import { redirect } from "next/navigation";
 
 const prisma = new PrismaClient();
 
-//const sessionUser = await checkSessionUser();
-
-//console.log('session: ' + sessionUser)
-
 
 // add a blog post
 export const addBlog = async (formData) => {
@@ -23,13 +19,13 @@ export const addBlog = async (formData) => {
     //check admin
     const session = await getServerSession(authOptions);
 
-    const user = await prisma.user.findFirst({
-        where: {
-            email: session?.user?.email
-        }
-    })
+    // const user = await prisma.user.findFirst({
+    //     where: {
+    //         email: session?.user?.email
+    //     }
+    // })
 
-    if (user?.role === 'ADMIN') {
+    if (session?.user?.role === 'ADMIN') {
         const newBlog = await prisma.blog.create({
             data: {
                 imageUrl: imageUrl ? imageUrl : '',
@@ -43,13 +39,6 @@ export const addBlog = async (formData) => {
         redirect('/blogs')
     }
 }
-
-// fetch all the blogs 
-
-// export const fetchBlogs = async () => {
-//     const blogs = await prisma.blog.findMany({});
-//     return blogs;
-// }
 
 
 // fetch a single blog

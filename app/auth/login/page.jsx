@@ -60,6 +60,7 @@ const LoginPage = () => {
             }
 
             router.replace("/")
+            setPending(false)
 
         } catch (error) {
             setPending(false);
