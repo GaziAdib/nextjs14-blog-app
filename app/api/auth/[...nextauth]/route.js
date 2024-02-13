@@ -55,7 +55,8 @@ export const authOptions = {
                     id: user.id,
                     email: user.email,
                     username: user.username,
-                    role: user.role
+                    role: user.role,
+                    permissions: user?.permissions
                 }
 
             }
@@ -80,7 +81,7 @@ export const authOptions = {
                     username: token.username,
                     email: token.email,
                     role: token.role,
-                    permissions: token.permissions
+                    permissions: token?.permissions
                 }
             }
         },

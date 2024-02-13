@@ -19,11 +19,6 @@ export const addBlog = async (formData) => {
     //check admin
     const session = await getServerSession(authOptions);
 
-    // const user = await prisma.user.findFirst({
-    //     where: {
-    //         email: session?.user?.email
-    //     }
-    // })
 
     if (session?.user?.role === 'ADMIN') {
         const newBlog = await prisma.blog.create({
@@ -76,13 +71,7 @@ export const updateBlog = async (id, formData) => {
     //blog?.authorId === session?.user?.id || session?.user?.permissions?.includes('EDIT_BLOG')
     console.log('permissions:', session?.user?.permissions)
 
-    const getuser = await prisma.user.findFirst({
-        where: {
-            id: session?.user?.id
-        }
-    })
-
-    if (getuser?.permissions?.includes('EDIT_BLOG') || (blog?.authorId === session?.user?.id)) {
+    if (session.user?.permissions?.includes('EDIT_BLOG') || (blog?.authorId === session?.user?.id)) {
         const updatedBlog = await prisma.blog.update({
             where: {
                 id: id,
