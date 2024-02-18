@@ -107,16 +107,19 @@ export const addCommentOnBlog = async (blogId, formData) => {
     const text = formData.get('text');
     const session = await getServerSession(authOptions);
 
-    const new_coment = await prisma.comment.create({
-        data: {
-            authorId: checkSessionUser(session),
-            blogId: blogId,
-            text: text,
-        }
-    });
+    if (text !== '') {
+        const new_coment = await prisma.comment.create({
+            data: {
+                authorId: checkSessionUser(session),
+                blogId: blogId,
+                text: text,
+            }
+        });
 
-    revalidatePath(`/blogs/${blogId}`)
-    redirect(`/blogs/${blogId}`)
+        revalidatePath(`/blogs/${blogId}`)
+        redirect(`/blogs/${blogId}`)
+    }
+
 }
 
 

@@ -6,13 +6,29 @@ import Button from './Button'
 import { addCommentOnBlog } from '@/actions/actions';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 const CommentForm = ({ blogId }) => {
 
+    const session = useSession();
 
     const ref = useRef();
 
     const handleAddComment = async (formData) => {
+        if (!session?.data?.user) {
+            toast.error('You Must Login to Comment!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark"
+            });
+            redirect('/auth/login');
+        }
         await addCommentOnBlog(blogId, formData)
         toast.success('New Comment Added!', {
             position: "top-right",
