@@ -10,11 +10,16 @@ const prisma = new PrismaClient();
 
 
 // add a blog post
-export const addBlog = async (formData) => {
-    const title = formData.get('title');
-    const description = formData.get('description');
-    const category = formData.get('category');
-    const imageUrl = formData.get('imageUrl');
+export const addBlog = async (data) => {
+
+    console.log('form Passed Data', data);
+
+    const { imageUrl, title, description, category } = data || {};
+
+    // const title = formData.get('title');
+    // const description = formData.get('description');
+    // const category = formData.get('category');
+    // const imageUrl = formData.get('imageUrl');
 
     //check admin
     const session = await getServerSession(authOptions);
@@ -24,9 +29,9 @@ export const addBlog = async (formData) => {
         const newBlog = await prisma.blog.create({
             data: {
                 imageUrl: imageUrl ? imageUrl : '',
-                title,
-                description,
-                category,
+                title: title,
+                description: description,
+                category: category,
                 authorId: checkSessionUser(session)
             }
         })
